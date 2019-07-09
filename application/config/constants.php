@@ -138,3 +138,6 @@ defined('HAS_FILE_UPLOAD')		OR define('HAS_FILE_UPLOAD',TRUE);
 
 //Habilita la posiblidad de usar subhabilidades dentro del sistema
 defined('HAS_SUBHABIL')			OR define('HAS_SUBHABIL',TRUE);
+
+//Nombre del logo principal en BD
+defined('MAIN_LOGO_CONST')			OR define('MAIN_LOGO_CONST', 'main_logo');

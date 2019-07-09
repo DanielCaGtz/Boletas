@@ -8,34 +8,6 @@ class MdlLogin extends CI_Model{
 		//$this->school = $this->load->database('school', TRUE);
 	}
 
-	public function check_login($username,$pwd){
-		$pwd=hash('sha512',$pwd);
-		$result=$this->getDataFromQuery("SELECT * from usuarios_boletas where username='$username' AND pwd='$pwd' AND date_end IS NULL ;");
-		if($result!==FALSE){
-			return $result;
-		}else return FALSE;
-	}
-
-	public function check_login_by_id($id){
-		$result=$this->db->query("SELECT * from usuarios_boletas where id='$id';");
-		return $result->num_rows()>0?$result->result_array():FALSE;
-	}
-
-	public function check_email_existence($dato){
-		$result=$this->db->query("SELECT id from usuarios_boletas where numero='$dato';");
-		return $result->num_rows()>0?$result->result_array():FALSE;
-	}
-
-	public function getData($select,$from,$where,$order,$group,$limit){
-		$query="SELECT $select FROM $from ";
-		if($where!=="") $query.="WHERE $where ";
-		if($group!=="") $query.="GROUP BY $group ";
-		if($order!=="") $query.="ORDER BY $order ";
-		if($limit!=="") $query.="LIMIT $limit ";
-		$result=$this->db->query($query);
-		return $result->num_rows()>0?$result->result_array():FALSE;
-	}
-
 	public function getData_School($select,$from,$where,$order,$group,$limit){
 		$query="SELECT $select FROM $from ";
 		if($where!=="") $query.="WHERE $where ";

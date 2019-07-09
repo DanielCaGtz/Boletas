@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Sistema de Boletas</title>
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<title>Sistema de Boletas</title>
 		<script type="text/javascript">window.url = {base_url:"<?php echo nombre_ruta_host(); ?>"};</script>
 		<link rel="stylesheet" href="<?php echo base_url(); ?>bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>css/font-awesome.min.css">
@@ -15,11 +15,17 @@
 	<body class="hold-transition login-page">
 		<div class="login-box">
 			<div class="login-logo"><a href="<?php echo base_url(); ?>"><b>Sistema de Boletas</b></a></div>
-			<center><img src="<?php echo base_url('files/'.$this->constants_util->getConstant("url_login")); ?>" style="width:360px;margin-bottom: 20px;"></center>
+			<center><img src="<?=
+					base_url('files/'.$controller->get_data_single('url_login', 'url_login', 'constantes',
+						array(
+							'nombre' => MAIN_LOGO_CONST
+						)
+					)) ?>"
+				style="width:360px;margin-bottom: 20px;"></center>
 			<div id="msg_receptor" class="callout" style="display:none;">
 				<h4 id="msg1_callout"></h4>
 				<span id="msg2_callout"></span>
-	      	</div>
+	    </div>
 			<div class="login-box-body">
 				<p class="login-box-msg">Inicie sesión</p>
 				<form id="login_form" method="post" enctype="multipart/form-data">
@@ -41,34 +47,6 @@
 		<script src="<?php echo base_url(); ?>plugins/jQuery/jquery-2.2.3.min.js"></script>
 		<script src="<?php echo base_url(); ?>bootstrap/js/bootstrap.min.js"></script>
 		<script src="<?php echo base_url(); ?>plugins/iCheck/icheck.min.js"></script>
-		<script>
-			$(function () {
-				$('input').iCheck({
-					checkboxClass: 'icheckbox_square-blue',
-					radioClass: 'iradio_square-blue',
-					increaseArea: '20%' // optional
-				});
-			});
-			$(document).ready(function(){
-				$("#login_form").on("submit",function(evt){
-					evt.preventDefault();
-					$.post(window.url.base_url+"login/ctrlogin/login",{data:$(this).serialize()},function(resp){
-						resp=JSON.parse(resp);
-						$("#msg_receptor").fadeOut(800,function(){
-							$("#msg_receptor").removeClass("callout-danger").removeClass("callout-success").removeClass("callout-warning").addClass("callout-"+resp.type_msg);
-							$("#msg1_callout").html(resp.title);
-							$(this).html(resp.msg);			
-							$(this).show();
-							$(this).fadeIn(700);
-						});
-						if(resp.success!==false){
-							setTimeout(function(){
-								location.reload();
-							},2000);
-						}
-					});
-				});
-			});
-		</script>
+		<script src="<?php echo base_url(); ?>js/controllers/login.js"></script>
 	</body>
 </html>
