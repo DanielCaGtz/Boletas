@@ -16,7 +16,7 @@
 		<div class="login-box">
 			<div class="login-logo"><a href="<?php echo base_url(); ?>"><b>Sistema de Boletas</b></a></div>
 			<center><img src="<?=
-					base_url('files/'.$controller->get_data_single('url_login', 'url_login', 'constantes',
+					base_url('files/'.$controller->get_data_single_result('url_login', 'url_login', 'constantes',
 						array(
 							'nombre' => MAIN_LOGO_CONST
 						)

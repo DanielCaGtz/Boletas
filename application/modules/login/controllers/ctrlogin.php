@@ -20,7 +20,7 @@ class ctrLogin extends MX_Controller {
 		$data = $this->security->xss_clean($this->input->post('data'));
 		$params = array();
 		parse_str($data, $params);
-		$data_login = Modules::run('tools/ctrdb/get_data', '*', 'usuarios_boletas',
+		$data_login = Modules::run('tools/ctrdb/get_data_single_row', 'id, nombre, username, escuelas_id, ciclos_id', 'usuarios_boletas',
 			array(
 				'username' => $params['username'],
 				'pwd' => hash('sha512', $params['pwd']),
@@ -36,7 +36,8 @@ class ctrLogin extends MX_Controller {
 			}
 			$this->session->set_userdata("data_temp", array());
 			$this->session->set_userdata("current_test", 0);
-			$this->session->set_userdata($data_login[0]);
+			$this->session->set_userdata($data_login);
+			Modules::run('tools/ctrdb/log_activity', 'login', $data_login['id']);
 			print json_encode(
 				array(
 					"success" => TRUE,

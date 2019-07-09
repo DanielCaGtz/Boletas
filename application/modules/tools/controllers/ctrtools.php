@@ -2,12 +2,34 @@
 
 class CtrTools extends MX_Controller{
 	
-	function __construct(){
+	function __construct () {
 		parent::__construct();
-		$this->load->library('archivos');
+		// $this->load->library('archivos');
 		$this->ruta=FILE_ROUTE_FULL."files";
 		#$this->files_allowed='gif|jpg|png|jpeg|doc|docx|pdf';
-		$this->files_allowed='xlsx|xls';
+		$this->files_allowed = 'xlsx|xls';
+	}
+
+	public function get_school_name () {
+		$data = Modules::run('ctrdb/get_data_single_result', 'alias', 'alias', 'escuelas', array(
+			'id' => $this->session->userdata('escuelas_id')
+		));
+		if ($data) return $data;
+		return FALSE;
+	}
+
+	public function consulta_uri ($txt) {
+		$url = explode('/', $_SERVER["REQUEST_URI"]);
+		$url = $url[count($url) - 1];
+		foreach ($txt AS $item) {
+			if ($item === $url) {
+				return "active";
+			}
+		}
+	}
+
+	public function get_self () {
+		return $this;
 	}
 	
 	public function doupload($name){

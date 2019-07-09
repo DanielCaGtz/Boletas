@@ -4,7 +4,8 @@ class MdlDb extends CI_Model {
 	
 	function __construct () {
     parent::__construct();
-    $this->comparison_types = array('equals' => '=', 'not_equals' => '!=');
+    $this->comparison_types = array('equals' => '=', 'not_equals' => '!=', 'greater' => '>', 'lower' => '<');
+    // $this->load->library('exceptions');
   }
 
   public function getData ($select, $from, $where, $order, $group, $limit) {
@@ -36,6 +37,28 @@ class MdlDb extends CI_Model {
 		$result = $this->db->query($query);
     return $result->num_rows() > 0 ?
       $result->result_array() :
+      FALSE;
+  }
+
+  public function getDataFromQuery ($query) {
+		$result = $this->db->query($query);
+    return $result->num_rows() > 0 ?
+      $result->result_array() :
+      FALSE;
+	}
+  
+  public function insertDataBatch ($datos, $tabla) {
+		$this->db->insert_batch($tabla, $datos);
+    return $this->db->insert_id() > 0 ?
+      $this->db->insert_id() :
+      FALSE;
+	}
+
+	public function insertData ($datos, $tabla) {
+		$this->db->insert($tabla,$datos);
+		// $this->exceptions->checkForError();
+    return $this->db->insert_id() > 0 ?
+      $this->db->insert_id() :
       FALSE;
 	}
   

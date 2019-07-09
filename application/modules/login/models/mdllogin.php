@@ -18,25 +18,9 @@ class MdlLogin extends CI_Model{
 		return $result->num_rows()>0?$result->result_array():FALSE;
 	}
 
-	public function getDataFromQuery($query){
-		$result=$this->db->query($query);
-		return $result->num_rows()>0?$result->result_array():FALSE;
-	}
-
 	public function getDataFromQuery_School($query){
 		$result=$this->school->query($query);
 		return $result->num_rows()>0?$result->result_array():FALSE;
-	}
-
-	public function insertDataBatch($datos,$tabla){
-		$this->db->insert_batch($tabla,$datos);
-		return $this->db->insert_id()>0 ? $this->db->insert_id() : FALSE;
-	}
-
-	public function insertData($datos,$tabla){
-		$this->db->insert($tabla,$datos);
-		//$this->exceptions->checkForError();
-		return $this->db->insert_id()>0 ? $this->db->insert_id() : FALSE;
 	}
 
 	public function editData($data,$table,$id,$idName,$where=";"){

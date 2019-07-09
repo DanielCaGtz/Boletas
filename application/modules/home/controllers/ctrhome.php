@@ -1,23 +1,34 @@
 <?php
 
-class ctrHome extends MX_Controller{
+class ctrHome extends MX_Controller {
 
-	function __construct(){
+	function __construct () {
 		parent::__construct();
-		$this->load->model('login/mdllogin');
-		//$this->load->model('login/mdllogin1718');
 		error_reporting(E_ALL);
 		ini_set('display_errors', 1);
 		date_default_timezone_set('America/Mexico_City');
-		include FILE_ROUTE_FULL."addons/phpexcel/Classes/PHPExcel.php";
-		include FILE_ROUTE_FULL."addons/phpexcel/Classes/PHPExcel/Writer/Excel2007.php";
-		include FILE_ROUTE_FULL."addons/phpexcel/Classes/PHPExcel/IOFactory.php";
-		require FILE_ROUTE_FULL.'addons/mailer/PHPMailerAutoload.php';
+		$this->dbTools = Modules::run('tools/ctrdb/get_self');
+		$this->utils = Modules::run('tools/ctrtools/get_self');
 	}
 
-	public function get_module($module){
-		if(constant($module)){
-			return Modules::run("home/ctrmodules/"."get_module_".$module);
+	public function get_module ($module) {
+		if (constant($module)) {
+			return Modules::run('home/ctrmodules/'.'get_module_'.$module);
+		}
+	}
+
+	public function index () {
+		if ($this->session->userdata('id')) {
+			$data['controller'] = $this->dbTools;
+			$data['utils'] = $this->utils;
+			$data['schoolName'] = $this->utils->get_school_name();
+			print $this->load->view('templates/vwheader', $data, TRUE);
+			print $this->load->view('templates/vwmenu', $data, TRUE);
+			print $this->load->view('vwhome', $data, TRUE);
+			print $this->load->view('vwfooter', $data, TRUE);
+			print $this->load->view('vwsidebar', $data, TRUE);
+		} else {
+			redirect(base_url());
 		}
 	}
 
@@ -45,17 +56,6 @@ class ctrHome extends MX_Controller{
 		#if (!$mail->send()) echo "Mailer Error: " . $mail->ErrorInfo; else echo "Message sent!";
 		$mail->send();
 		print json_encode(array("success"=>TRUE));
-	}
-
-	public function index(){
-		if($this->session->userdata("id")){
-			$data["controller"]=$this;
-			print $this->load->view("vwheader",$data,TRUE);
-			print $this->load->view("vwaside",$data,TRUE);
-			print $this->load->view("vwhome",$data,TRUE);
-			print $this->load->view("vwfooter",$data,TRUE);
-			print $this->load->view("vwsidebar",$data,TRUE);
-		}else redirect(base_url());
 	}
 
 	public function closesession(){
@@ -1035,21 +1035,7 @@ class ctrHome extends MX_Controller{
 	}
 
 	public function get_self(){return $this;}
-	public function insert_data($data,$table){
-		if(intval($this->session->userdata('is_ciclo1718')))
-			return $this->mdllogin1718->insertData($data,$table);
-		return $this->mdllogin->insertData($data,$table);
-	}
-	public function get_data($select="",$from="",$where="",$order="",$group="",$limit=""){
-		if(intval($this->session->userdata('is_ciclo1718')))
-			return $this->mdllogin1718->getData($select,$from,$where,$order,$group,$limit);
-		return $this->mdllogin->getData($select,$from,$where,$order,$group,$limit);
-	}
-	public function get_data_from_query($query){
-		if(intval($this->session->userdata('is_ciclo1718')))
-			return $this->mdllogin1718->getDataFromQuery($query);
-		return $this->mdllogin->getDataFromQuery($query);
-	}
+	
 	public function edit_data($data,$table,$id,$idName,$where=";"){
 		if(intval($this->session->userdata('is_ciclo1718')))
 			return $this->mdllogin1718->editData($data,$table,$id,$idName,$where);
